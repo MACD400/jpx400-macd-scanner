@@ -174,7 +174,7 @@ def scan(args):
     if all_df.empty:
         raise RuntimeError("評価できる銘柄がありません")
     ok = all_df[all_df["status"] == "OK"].copy()
-    confirmed = ok[ok["cross"] != "NONE"].copy()
+    confirmed = ok[(ok["cross"] == "GC確定") & (ok["zero_zone"] == "下")].copy()
     approaching = ok[ok["proximity"] != "NONE"].copy()
     failed = pd.DataFrame(failures, columns=["ticker", "reason"]).drop_duplicates()
     audit = pd.DataFrame([{
