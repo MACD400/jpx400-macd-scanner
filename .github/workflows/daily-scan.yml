@@ -23,7 +23,7 @@ jobs:
         run: pip install pandas yfinance openpyxl
 
       - name: Run MACD scanner
-        run: python jpx400_macd_scanner.py --constituents jpx400_constituents.csv --asof "$(date -u +%F)" --output jpx400_macd_results.xlsx
+        run: python jpx400_macd_advanced.py --constituents jpx400_constituents.csv --asof "$(date -u +%F)" --output jpx400_macd_results.xlsx
 
       - name: Upload Excel results
         if: always()
