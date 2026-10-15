@@ -47,7 +47,7 @@ def load_constituents(path: Path) -> pd.DataFrame:
 
     out = raw[[code_col, name_col]].copy()
     out.columns = ["code", "name"]
-    out["code"] = out["code"].astype(str).str.extract(r"(\d{4})", expand=False)
+    out["code"] = out["code"].astype(str).str.extract(r"([0-9]{4}|[0-9]{3}[A-Z])", expand=False)
     out = out.dropna(subset=["code"]).drop_duplicates("code")
     out["name"] = out["name"].fillna("").astype(str).str.strip()
     out["ticker"] = out["code"] + ".T"
