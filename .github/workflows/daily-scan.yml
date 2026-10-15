@@ -1,0 +1,35 @@
+name: JPX400 MACD daily scan
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '40 7 * * 1-5'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install libraries
+        run: pip install pandas yfinance openpyxl
+
+      - name: Run MACD scanner
+        run: python jpx400_macd_scanner.py --constituents jpx400_constituents.csv --asof "$(date -u +%F)" --output jpx400_macd_results.xlsx
+
+      - name: Upload Excel results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jpx400-macd-results
+          path: jpx400_macd_results.xlsx
+          if-no-files-found: warn
+          retention-days: 30
